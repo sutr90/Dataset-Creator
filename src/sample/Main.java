@@ -32,13 +32,53 @@ public final class Main extends Application {
     private List<File> images;
     private int imageIndex = 0;
     private DatasetXML dataset = new DatasetXML("5318008");
+    private double decorationWidth;
+    private double decorationHeight;
+
+//    @Override
+//    public void start(Stage primaryStage) {
+//        StackPane root = new StackPane();
+//        Scene scene = new Scene(root, 800, 600);
+//        primaryStage.setScene(scene);
+//
+//        System.out.println("before sceneW " + scene.getWidth());
+//        System.out.println("before sceneH " +  scene.getHeight());
+//        System.out.println("before stageW " + primaryStage.getWidth());
+//        System.out.println("before stageH " + primaryStage.getHeight());
+//
+//        primaryStage.show();
+//
+//        System.out.println("after sceneW " + scene.getWidth());
+//        System.out.println("after sceneH " +  scene.getHeight());
+//        System.out.println("after stageW " + primaryStage.getWidth());
+//        System.out.println("after stageH " + primaryStage.getHeight());
+//
+//        primaryStage.setWidth(640 + (primaryStage.getWidth()-scene.getWidth()));
+//        primaryStage.setHeight(480);
+//
+//        System.out.println("before sceneW " + scene.getWidth());
+//        System.out.println("before sceneH " +  scene.getHeight());
+//        System.out.println("before stageW " + primaryStage.getWidth());
+//        System.out.println("before stageH " + primaryStage.getHeight());
+//    }
 
     @Override
     public void start(final Stage stage) {
         images = loadImageList("D:\\dev\\nudes\\");
 
         final Pane panelsPane = new Pane();
-        final ImageView imageView = new ImageView(new Image(images.get(imageIndex).toURI().toString()));
+        final ImageView imageView = new ImageView();
+        final StackPane sceneLayout = new StackPane();
+        sceneLayout.getChildren().addAll(imageView, panelsPane);
+
+        final Scene scene = new Scene(sceneLayout, 800, 800);
+
+        stage.setScene(scene);
+        stage.show();
+        this.decorationWidth = (stage.getWidth() - scene.getWidth());
+        this.decorationHeight = (stage.getHeight() - scene.getHeight());
+
+        updateImage(imageView, stage);
 
         panelsPane.setOnMouseClicked(click -> {
             if (click.getClickCount() == 2) {
@@ -55,33 +95,30 @@ public final class Main extends Application {
             }
         });
 
-        final StackPane sceneLayout = new StackPane();
-        sceneLayout.getChildren().addAll(imageView, panelsPane);
-
-        Scene scene = new Scene(sceneLayout);
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
             if (key.getCode() == KeyCode.ENTER || key.getCode() == KeyCode.SPACE) {
-                ImageXML img = new ImageXML(images.get(imageIndex).getName());
+                ImageXML img = new ImageXML(images.get(imageIndex - 1).getName());
 
                 panelsPane.getChildren().forEach(node -> {
-                    Bounds bb = node.localToScene(node.getBoundsInLocal());
-                    img.addBox(new BoxXML((int) (bb.getMinX()), (int) (bb.getMinY()),
-                            (int) bb.getWidth(), (int) bb.getHeight()));
+                    Bounds bb = node.localToScene(node.getLayoutBounds());
+                    img.addBox(new BoxXML((int) (bb.getMinX()), (int) (bb.getMinY()), (int) bb.getWidth(), (int) bb
+                            .getHeight()));
                 });
 
-
                 dataset.addImage(img);
-
-                imageIndex++;
-                imageView.setImage(new Image(images.get(imageIndex).toURI().toString()));
                 panelsPane.getChildren().clear();
-//                stage.setWidth(imageView.getImage().getWidth());
-//                stage.setHeight(imageView.getImage().getHeight());
+                updateImage(imageView, stage);
             }
         });
 
-        stage.setScene(scene);
-        stage.show();
+
+    }
+
+    private void updateImage(ImageView imageView, Stage stage) {
+        imageView.setImage(new Image(images.get(imageIndex).toURI().toString()));
+        stage.setWidth(imageView.getImage().getWidth() + decorationWidth);
+        stage.setHeight(imageView.getImage().getHeight() + decorationHeight);
+        imageIndex++;
     }
 
     private List<File> loadImageList(String path) {
@@ -137,7 +174,7 @@ public final class Main extends Application {
 
     @Override
     public void stop() {
-        try (PrintWriter out = new PrintWriter("D:\\dev\\porn\\dataset.xml")) {
+        try (PrintWriter out = new PrintWriter("D:\\dev\\nudes\\dataset.xml")) {
             out.println(dataset.toString());
         } catch (FileNotFoundException e) {
             e.printStackTrace();
