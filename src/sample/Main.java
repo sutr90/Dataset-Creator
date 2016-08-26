@@ -35,33 +35,6 @@ public final class Main extends Application {
     private double decorationWidth;
     private double decorationHeight;
 
-//    @Override
-//    public void start(Stage primaryStage) {
-//        StackPane root = new StackPane();
-//        Scene scene = new Scene(root, 800, 600);
-//        primaryStage.setScene(scene);
-//
-//        System.out.println("before sceneW " + scene.getWidth());
-//        System.out.println("before sceneH " +  scene.getHeight());
-//        System.out.println("before stageW " + primaryStage.getWidth());
-//        System.out.println("before stageH " + primaryStage.getHeight());
-//
-//        primaryStage.show();
-//
-//        System.out.println("after sceneW " + scene.getWidth());
-//        System.out.println("after sceneH " +  scene.getHeight());
-//        System.out.println("after stageW " + primaryStage.getWidth());
-//        System.out.println("after stageH " + primaryStage.getHeight());
-//
-//        primaryStage.setWidth(640 + (primaryStage.getWidth()-scene.getWidth()));
-//        primaryStage.setHeight(480);
-//
-//        System.out.println("before sceneW " + scene.getWidth());
-//        System.out.println("before sceneH " +  scene.getHeight());
-//        System.out.println("before stageW " + primaryStage.getWidth());
-//        System.out.println("before stageH " + primaryStage.getHeight());
-//    }
-
     @Override
     public void start(final Stage stage) {
         images = loadImageList("D:\\dev\\nudes\\");
@@ -91,6 +64,17 @@ public final class Main extends Application {
                     if (click2.getButton().equals(MouseButton.SECONDARY)) {
                         panelsPane.getChildren().remove(panel);
                     }
+                });
+
+                panel.setOnScroll(event -> {
+                    // Adjust the zoom factor as per your requirement
+                    double zoomFactor = 1.05;
+                    double deltaY = event.getDeltaY();
+                    if (deltaY < 0) {
+                        zoomFactor = 2.0 - zoomFactor;
+                    }
+                    panel.setScaleX(panel.getScaleX() * zoomFactor);
+                    panel.setScaleY(panel.getScaleY() * zoomFactor);
                 });
             }
         });
