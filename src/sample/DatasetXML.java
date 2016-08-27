@@ -3,11 +3,11 @@ package sample;
 import java.util.ArrayList;
 import java.util.List;
 
-class DatasetXML {
+public class DatasetXML {
     private List<ImageXML> images;
     private String name;
 
-    DatasetXML(String name) {
+    public DatasetXML(String name) {
         this.images = new ArrayList<>();
         this.name = name;
     }
@@ -29,19 +29,6 @@ class DatasetXML {
     }
 
     void addImage(ImageXML image) {
-        int index = images.indexOf(image);
-        if (index == -1) {
-            images.add(image);
-        } else {
-            images.remove(index);
-            images.add(index, image);
-        }
-    }
-
-    ImageXML getImage(int imageIndex) {
-        if (imageIndex < 0 || imageIndex >= images.size()) {
-            return null;
-        }
-        return images.get(imageIndex);
+        images.add(image);
     }
 }

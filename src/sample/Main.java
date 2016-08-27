@@ -13,10 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -63,7 +60,7 @@ public final class Main extends Application {
         this.decorationWidth = (stage.getWidth() - scene.getWidth());
         this.decorationHeight = (stage.getHeight() - scene.getHeight());
 
-        updateImage(imageView, stage, panelsPane);
+        updateImage(imageView, stage);
 
         panelsPane.setOnMouseClicked(click -> {
             if (click.getClickCount() == 1 && click.getButton().equals(MouseButton.PRIMARY)) {
@@ -98,34 +95,23 @@ public final class Main extends Application {
         });
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-            switch (key.getCode()) {
-                case ENTER:
-                case SPACE:
-                    if (imageIndex < images.size()) {
-                        if (panelsPane.getChildren().size() > 0) {
-                            ImageXML img = new ImageXML(images.get(imageIndex).getName());
+            if (imageIndex < images.size()) {
+                if (key.getCode() == KeyCode.ENTER || key.getCode() == KeyCode.SPACE) {
 
-                            panelsPane.getChildren().forEach(node -> {
-                                Bounds bb = node.localToScene(node.getLayoutBounds());
-                                img.addBox(new BoxXML((int) (bb.getMinX()), (int) (bb.getMinY()), (int) bb.getWidth()
-                                        , (int) bb.getHeight()));
-                            });
+                    if (panelsPane.getChildren().size() > 0) {
+                        ImageXML img = new ImageXML(images.get(imageIndex - 1).getName());
 
-                            dataset.addImage(img);
-                        }
-                        imageIndex++;
-                        updateImage(imageView, stage, panelsPane);
+                        panelsPane.getChildren().forEach(node -> {
+                            Bounds bb = node.localToScene(node.getLayoutBounds());
+                            img.addBox(new BoxXML((int) (bb.getMinX()), (int) (bb.getMinY()), (int) bb.getWidth(),
+                                    (int) bb.getHeight()));
+                        });
+
+                        dataset.addImage(img);
+                        panelsPane.getChildren().clear();
                     }
-                    break;
-
-                case KP_LEFT:
-                case LEFT: {
-                    if (imageIndex > 0) {
-                        imageIndex--;
-                        updateImage(imageView, stage, panelsPane);
-                    }
+                    updateImage(imageView, stage);
                 }
-                break;
             }
         });
     }
@@ -141,26 +127,13 @@ public final class Main extends Application {
         panel.setScaleY(Math.max(panel.getScaleY() * zoomFactor, 1.0));
     }
 
-    private void updateImage(ImageView imageView, Stage stage, Pane panelsPane) {
+    private void updateImage(ImageView imageView, Stage stage) {
         title.set((imageIndex + 1) + "/" + images.size() + " - " + images.get(imageIndex).getName());
         imageView.setImage(new Image(images.get(imageIndex).toURI().toString()));
         stage.setWidth(imageView.getImage().getWidth() + decorationWidth);
         stage.setHeight(imageView.getImage().getHeight() + decorationHeight);
+        imageIndex++;
         zoom = 1.0;
-        ImageXML img = dataset.getImage(imageIndex);
-        if (img != null) {
-            List<BoxXML> boxes = img.getBoxes();
-            for (BoxXML box : boxes) {
-                final Node panel = makeDraggable();
-                panelsPane.getChildren().clear();
-                panelsPane.getChildren().add(panel);
-                panel.setTranslateX(box.left);
-                panel.setTranslateY(box.top);
-                ((HBox) ((Group) panel).getChildren().get(0)).setMinSize(box.width, box.height);
-            }
-        } else {
-            panelsPane.getChildren().clear();
-        }
     }
 
     private List<File> loadImageList(String path) {
