@@ -11,10 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -60,7 +57,7 @@ public final class Main extends Application {
 
         panelsPane.setOnMouseClicked(click -> {
             if (click.getClickCount() == 2) {
-                final Node panel = makeDraggable(createProgressPanel());
+                final Node panel = makeDraggable();
                 panelsPane.getChildren().add(panel);
                 panel.setScaleX(zoom);
                 panel.setScaleY(zoom);
@@ -74,19 +71,13 @@ public final class Main extends Application {
                 });
 
                 panel.setOnScroll(event -> {
-                    // Adjust the zoom factor as per your requirement
-
-                    double zoomFactor = event.isControlDown()? 1.2 : 1.05;
-                    double deltaY = event.getDeltaY();
-                    if (deltaY < 0) {
-                        zoomFactor = 2.0 - zoomFactor;
-                    }
-                    zoom = Math.max(zoom * zoomFactor, 1.0);
-                    panel.setScaleX(Math.max(panel.getScaleX() * zoomFactor, 1.0));
-                    panel.setScaleY(Math.max(panel.getScaleY() * zoomFactor, 1.0));
+                    doZoom(event, panel);
+                    event.consume();
                 });
             }
         });
+
+        panelsPane.setOnScroll(event -> panelsPane.getChildren().forEach(panel -> doZoom(event, panel)));
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
             if (key.getCode() == KeyCode.ENTER || key.getCode() == KeyCode.SPACE) {
@@ -103,8 +94,17 @@ public final class Main extends Application {
                 updateImage(imageView, stage);
             }
         });
+    }
 
-
+    private void doZoom(ScrollEvent event, Node panel){
+        double zoomFactor = event.isControlDown()? 1.2 : 1.05;
+        double deltaY = event.getDeltaY();
+        if (deltaY < 0) {
+            zoomFactor = 2.0 - zoomFactor;
+        }
+        zoom = Math.max(zoom * zoomFactor, 1.0);
+        panel.setScaleX(Math.max(panel.getScaleX() * zoomFactor, 1.0));
+        panel.setScaleY(Math.max(panel.getScaleY() * zoomFactor, 1.0));
     }
 
     private void updateImage(ImageView imageView, Stage stage) {
@@ -132,7 +132,12 @@ public final class Main extends Application {
         launch(args);
     }
 
-    private Node makeDraggable(final Node node) {
+    private Node makeDraggable() {
+        final HBox node = new HBox();
+        node.setMinSize(SIZE, SIZE);
+        node.setBlendMode(BlendMode.DIFFERENCE);
+        node.setStyle("-fx-background-color: white;");
+
         final DragContext dragContext = new DragContext();
         final Group wrapGroup = new Group(node);
         wrapGroup.addEventFilter(MouseEvent.MOUSE_PRESSED, mouseEvent -> {
@@ -147,14 +152,6 @@ public final class Main extends Application {
             node.setTranslateY(dragContext.initialTranslateY + mouseEvent.getY() - dragContext.mouseAnchorY);
         });
         return wrapGroup;
-    }
-
-    private Node createProgressPanel() {
-        final HBox hbox = new HBox();
-        hbox.setMinSize(SIZE, SIZE);
-        hbox.setBlendMode(BlendMode.DIFFERENCE);
-        hbox.setStyle("-fx-background-color: white;");
-        return hbox;
     }
 
     private final class DragContext {
