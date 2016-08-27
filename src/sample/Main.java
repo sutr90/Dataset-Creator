@@ -35,7 +35,10 @@ public final class Main extends Application {
     private double decorationWidth;
     private double decorationHeight;
 
+    private final static double SIZE = 30;
+
     @Override
+
     public void start(final Stage stage) {
         images = loadImageList("D:\\dev\\nudes\\");
 
@@ -57,8 +60,8 @@ public final class Main extends Application {
             if (click.getClickCount() == 2) {
                 final Node panel = makeDraggable(createProgressPanel());
                 panelsPane.getChildren().add(panel);
-                panel.setTranslateX(click.getSceneX() - 30);
-                panel.setTranslateY(click.getSceneY() - 30);
+                panel.setTranslateX(click.getSceneX() - SIZE / 2);
+                panel.setTranslateY(click.getSceneY() - SIZE / 2);
 
                 panel.setOnMouseClicked(click2 -> {
                     if (click2.getButton().equals(MouseButton.SECONDARY)) {
@@ -73,8 +76,9 @@ public final class Main extends Application {
                     if (deltaY < 0) {
                         zoomFactor = 2.0 - zoomFactor;
                     }
-                    panel.setScaleX(panel.getScaleX() * zoomFactor);
-                    panel.setScaleY(panel.getScaleY() * zoomFactor);
+
+                    panel.setScaleX(Math.max(panel.getScaleX() * zoomFactor, 1.0));
+                    panel.setScaleY(Math.max(panel.getScaleY() * zoomFactor, 1.0));
                 });
             }
         });
@@ -142,10 +146,10 @@ public final class Main extends Application {
 
     private static Node createProgressPanel() {
         final HBox hbox = new HBox();
-        hbox.setMinSize(60, 60);
-        hbox.setMaxSize(60, 60);
+        hbox.setMinSize(SIZE, SIZE);
         hbox.setBlendMode(BlendMode.DIFFERENCE);
         hbox.setStyle("-fx-background-color: white;");
+        hbox.setCenterShape(true);
         return hbox;
     }
 
