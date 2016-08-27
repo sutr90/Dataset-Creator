@@ -37,8 +37,10 @@ public final class Main extends Application {
 
     private final static double SIZE = 30;
 
-    @Override
+    private double zoom = 1.0;
 
+
+    @Override
     public void start(final Stage stage) {
         images = loadImageList("D:\\dev\\nudes\\");
 
@@ -60,6 +62,8 @@ public final class Main extends Application {
             if (click.getClickCount() == 2) {
                 final Node panel = makeDraggable(createProgressPanel());
                 panelsPane.getChildren().add(panel);
+                panel.setScaleX(zoom);
+                panel.setScaleY(zoom);
                 panel.setTranslateX(click.getSceneX() - SIZE / 2);
                 panel.setTranslateY(click.getSceneY() - SIZE / 2);
 
@@ -71,12 +75,12 @@ public final class Main extends Application {
 
                 panel.setOnScroll(event -> {
                     // Adjust the zoom factor as per your requirement
-                    double zoomFactor = 1.05;
+                    double zoomFactor = 1.2;
                     double deltaY = event.getDeltaY();
                     if (deltaY < 0) {
                         zoomFactor = 2.0 - zoomFactor;
                     }
-
+                    zoom = Math.max(zoom * zoomFactor, 1.0);
                     panel.setScaleX(Math.max(panel.getScaleX() * zoomFactor, 1.0));
                     panel.setScaleY(Math.max(panel.getScaleY() * zoomFactor, 1.0));
                 });
@@ -107,6 +111,7 @@ public final class Main extends Application {
         stage.setWidth(imageView.getImage().getWidth() + decorationWidth);
         stage.setHeight(imageView.getImage().getHeight() + decorationHeight);
         imageIndex++;
+        zoom = 1.0;
     }
 
     private List<File> loadImageList(String path) {
@@ -143,17 +148,15 @@ public final class Main extends Application {
         return wrapGroup;
     }
 
-
-    private static Node createProgressPanel() {
+    private Node createProgressPanel() {
         final HBox hbox = new HBox();
         hbox.setMinSize(SIZE, SIZE);
         hbox.setBlendMode(BlendMode.DIFFERENCE);
         hbox.setStyle("-fx-background-color: white;");
-        hbox.setCenterShape(true);
         return hbox;
     }
 
-    private static final class DragContext {
+    private final class DragContext {
         double mouseAnchorX;
         double mouseAnchorY;
         double initialTranslateX;
