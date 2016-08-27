@@ -39,6 +39,9 @@ public final class Main extends Application {
     private double zoom = 1.0;
     private StringProperty title = new SimpleStringProperty("");
 
+    private double downX = 0;
+    private double downY = 0;
+
     @Override
     public void start(final Stage stage) {
         images = loadImageList("D:\\dev\\nudes\\train");
@@ -60,29 +63,36 @@ public final class Main extends Application {
         updateImage(imageView, stage);
 
         panelsPane.setOnMouseClicked(click -> {
-            if (click.getClickCount() == 1 && click.getButton().equals(MouseButton.PRIMARY) && click
-                    .isStillSincePress()) {
-                final Node panel = makeDraggable();
-                panelsPane.getChildren().add(panel);
-                panel.setScaleX(zoom);
-                panel.setScaleY(zoom);
-                panel.setTranslateX(click.getSceneX() - SIZE / 2);
-                panel.setTranslateY(click.getSceneY() - SIZE / 2);
+            if (click.getClickCount() == 1 && click.getButton().equals(MouseButton.PRIMARY)) {
+                if (click.getX() == downX && click.getY() == downY) {
 
-                panel.setOnMouseClicked(click2 -> {
-                    if (click2.getButton().equals(MouseButton.SECONDARY)) {
-                        panelsPane.getChildren().remove(panel);
-                    }
-                });
+                    final Node panel = makeDraggable();
+                    panelsPane.getChildren().add(panel);
+                    panel.setScaleX(zoom);
+                    panel.setScaleY(zoom);
+                    panel.setTranslateX(click.getSceneX() - SIZE / 2);
+                    panel.setTranslateY(click.getSceneY() - SIZE / 2);
 
-                panel.setOnScroll(event -> {
-                    doZoom(event, panel);
-                    event.consume();
-                });
+                    panel.setOnMouseClicked(click2 -> {
+                        if (click2.getButton().equals(MouseButton.SECONDARY)) {
+                            panelsPane.getChildren().remove(panel);
+                        }
+                    });
+
+                    panel.setOnScroll(event -> {
+                        doZoom(event, panel);
+                        event.consume();
+                    });
+                }
             }
         });
 
         panelsPane.setOnScroll(event -> panelsPane.getChildren().forEach(panel -> doZoom(event, panel)));
+
+        panelsPane.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+            downX = event.getX();
+            downY = event.getY();
+        });
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
             if (imageIndex < images.size()) {
