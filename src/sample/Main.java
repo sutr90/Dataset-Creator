@@ -41,7 +41,7 @@ public final class Main extends Application {
 
     @Override
     public void start(final Stage stage) {
-        images = loadImageList("D:\\dev\\nudes\\test");
+        images = loadImageList("D:\\dev\\nudes\\train");
 
         stage.titleProperty().bind(title);
 
@@ -60,7 +60,8 @@ public final class Main extends Application {
         updateImage(imageView, stage);
 
         panelsPane.setOnMouseClicked(click -> {
-            if (click.getClickCount() == 1 && click.getButton().equals(MouseButton.PRIMARY) && click.isStillSincePress()) {
+            if (click.getClickCount() == 1 && click.getButton().equals(MouseButton.PRIMARY) && click
+                    .isStillSincePress()) {
                 final Node panel = makeDraggable();
                 panelsPane.getChildren().add(panel);
                 panel.setScaleX(zoom);
@@ -86,16 +87,19 @@ public final class Main extends Application {
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
             if (imageIndex < images.size()) {
                 if (key.getCode() == KeyCode.ENTER || key.getCode() == KeyCode.SPACE) {
-                    ImageXML img = new ImageXML(images.get(imageIndex - 1).getName());
 
-                    panelsPane.getChildren().forEach(node -> {
-                        Bounds bb = node.localToScene(node.getLayoutBounds());
-                        img.addBox(new BoxXML((int) (bb.getMinX()), (int) (bb.getMinY()), (int) bb.getWidth(), (int)
-                                bb.getHeight()));
-                    });
+                    if (panelsPane.getChildren().size() > 0) {
+                        ImageXML img = new ImageXML(images.get(imageIndex - 1).getName());
 
-                    dataset.addImage(img);
-                    panelsPane.getChildren().clear();
+                        panelsPane.getChildren().forEach(node -> {
+                            Bounds bb = node.localToScene(node.getLayoutBounds());
+                            img.addBox(new BoxXML((int) (bb.getMinX()), (int) (bb.getMinY()), (int) bb.getWidth(),
+                                    (int) bb.getHeight()));
+                        });
+
+                        dataset.addImage(img);
+                        panelsPane.getChildren().clear();
+                    }
                     updateImage(imageView, stage);
                 }
             }
