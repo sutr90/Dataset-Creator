@@ -41,7 +41,7 @@ public final class Main extends Application {
 
     @Override
     public void start(final Stage stage) {
-        images = loadImageList("D:\\dev\\nudes\\train");
+        images = loadImageList("D:\\dev\\nudes\\test");
 
         stage.titleProperty().bind(title);
 
@@ -60,7 +60,7 @@ public final class Main extends Application {
         updateImage(imageView, stage);
 
         panelsPane.setOnMouseClicked(click -> {
-            if (click.getClickCount() == 2) {
+            if (click.getClickCount() == 1 && click.getButton().equals(MouseButton.PRIMARY) && click.isStillSincePress()) {
                 final Node panel = makeDraggable();
                 panelsPane.getChildren().add(panel);
                 panel.setScaleX(zoom);
@@ -84,18 +84,20 @@ public final class Main extends Application {
         panelsPane.setOnScroll(event -> panelsPane.getChildren().forEach(panel -> doZoom(event, panel)));
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-            if (key.getCode() == KeyCode.ENTER || key.getCode() == KeyCode.SPACE) {
-                ImageXML img = new ImageXML(images.get(imageIndex - 1).getName());
+            if (imageIndex < images.size()) {
+                if (key.getCode() == KeyCode.ENTER || key.getCode() == KeyCode.SPACE) {
+                    ImageXML img = new ImageXML(images.get(imageIndex - 1).getName());
 
-                panelsPane.getChildren().forEach(node -> {
-                    Bounds bb = node.localToScene(node.getLayoutBounds());
-                    img.addBox(new BoxXML((int) (bb.getMinX()), (int) (bb.getMinY()), (int) bb.getWidth(), (int) bb
-                            .getHeight()));
-                });
+                    panelsPane.getChildren().forEach(node -> {
+                        Bounds bb = node.localToScene(node.getLayoutBounds());
+                        img.addBox(new BoxXML((int) (bb.getMinX()), (int) (bb.getMinY()), (int) bb.getWidth(), (int)
+                                bb.getHeight()));
+                    });
 
-                dataset.addImage(img);
-                panelsPane.getChildren().clear();
-                updateImage(imageView, stage);
+                    dataset.addImage(img);
+                    panelsPane.getChildren().clear();
+                    updateImage(imageView, stage);
+                }
             }
         });
     }
@@ -112,7 +114,7 @@ public final class Main extends Application {
     }
 
     private void updateImage(ImageView imageView, Stage stage) {
-        title.set((imageIndex + 1) + "/" + images.size());
+        title.set((imageIndex + 1) + "/" + images.size() + " - " + images.get(imageIndex).getName());
         imageView.setImage(new Image(images.get(imageIndex).toURI().toString()));
         stage.setWidth(imageView.getImage().getWidth() + decorationWidth);
         stage.setHeight(imageView.getImage().getHeight() + decorationHeight);
@@ -156,6 +158,7 @@ public final class Main extends Application {
             node.setTranslateX(dragContext.initialTranslateX + mouseEvent.getX() - dragContext.mouseAnchorX);
             node.setTranslateY(dragContext.initialTranslateY + mouseEvent.getY() - dragContext.mouseAnchorY);
         });
+
         return wrapGroup;
     }
 
