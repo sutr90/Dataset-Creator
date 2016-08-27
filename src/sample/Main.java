@@ -75,7 +75,8 @@ public final class Main extends Application {
 
                 panel.setOnScroll(event -> {
                     // Adjust the zoom factor as per your requirement
-                    double zoomFactor = 1.2;
+
+                    double zoomFactor = event.isControlDown()? 1.2 : 1.05;
                     double deltaY = event.getDeltaY();
                     if (deltaY < 0) {
                         zoomFactor = 2.0 - zoomFactor;
