@@ -4,6 +4,8 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -35,11 +37,13 @@ public final class Main extends Application {
     private final static double SIZE = 30;
 
     private double zoom = 1.0;
-
+    private StringProperty title = new SimpleStringProperty("");
 
     @Override
     public void start(final Stage stage) {
-        images = loadImageList("D:\\dev\\nudes\\");
+        images = loadImageList("D:\\dev\\nudes\\train");
+
+        stage.titleProperty().bind(title);
 
         final Pane panelsPane = new Pane();
         final ImageView imageView = new ImageView();
@@ -96,8 +100,8 @@ public final class Main extends Application {
         });
     }
 
-    private void doZoom(ScrollEvent event, Node panel){
-        double zoomFactor = event.isControlDown()? 1.2 : 1.05;
+    private void doZoom(ScrollEvent event, Node panel) {
+        double zoomFactor = event.isControlDown() ? 1.05 : 1.2;
         double deltaY = event.getDeltaY();
         if (deltaY < 0) {
             zoomFactor = 2.0 - zoomFactor;
@@ -108,6 +112,7 @@ public final class Main extends Application {
     }
 
     private void updateImage(ImageView imageView, Stage stage) {
+        title.set((imageIndex + 1) + "/" + images.size());
         imageView.setImage(new Image(images.get(imageIndex).toURI().toString()));
         stage.setWidth(imageView.getImage().getWidth() + decorationWidth);
         stage.setHeight(imageView.getImage().getHeight() + decorationHeight);
