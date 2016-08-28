@@ -35,7 +35,6 @@ public class Dataset {
     }
 
     public Image next() {
-        //TODO: add method body
-        return null;
+        return imgIterator.next();
     }
 }

@@ -4,15 +4,16 @@ import sample.model.Image;
 
 public class ImageView {
     private static ImageView imageViewInstance = new ImageView();
-    private String uriString;
+    private Image image;
 
     private ImageView(){}
 
-    public String getUriString() {
-        return uriString;
+    String getUriString() {
+        return image.getUriString();
     }
 
     public static ImageView get(Image image){
+        imageViewInstance.image = image;
         return imageViewInstance;
     }
 }
