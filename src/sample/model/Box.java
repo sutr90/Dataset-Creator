@@ -6,10 +6,10 @@ import javafx.beans.property.SimpleDoubleProperty;
 public class Box {
     private double x;
     private double y;
-    private double width = 60;
-    private double height = 60;
+    private double width = 16;
+    private double height = 16;
 
-    private DoubleProperty zoom = new SimpleDoubleProperty(1.0);
+    private DoubleProperty zoom = new SimpleDoubleProperty(4.0);
 
     Box(double x, double y) {
         this.x = x - width / 2;
