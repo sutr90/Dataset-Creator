@@ -33,4 +33,9 @@ public class Dataset {
         int i = file.getName().lastIndexOf('.');
         return i > 0 && file.getName().substring(i + 1).toLowerCase().matches("jpg|jpeg|bmp|png");
     }
+
+    public Image next() {
+        //TODO: add method body
+        return null;
+    }
 }

@@ -19,7 +19,6 @@ public class Controller {
     }
 
     public ImageView next() {
-        //TODO: add method body
-        return null;
+        return ImageView.get(dataset.next());
     }
 }
