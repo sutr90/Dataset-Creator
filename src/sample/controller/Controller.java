@@ -78,12 +78,6 @@ public class Controller {
     }
 
     public void doZoom(ScrollEvent event) {
-        double zoomFactor = event.isControlDown() ? 1.05 : 1.2;
-        double deltaY = event.getDeltaY();
-        if (deltaY < 0) {
-            zoomFactor = 2.0 - zoomFactor;
-        }
-        double finalZoomFactor = zoomFactor;
-        observableList.forEach(bv -> bv.setZoom(finalZoomFactor));
+        observableList.forEach(bv -> bv.setZoom(event.getDeltaY(), event.isControlDown()));
     }
 }

@@ -9,7 +9,7 @@ public class Box {
     private double width = 60;
     private double height = 60;
 
-    public DoubleProperty zoom = new SimpleDoubleProperty(1.0);
+    private DoubleProperty zoom = new SimpleDoubleProperty(1.0);
 
     Box(double x, double y) {
         this.x = x;
@@ -38,5 +38,13 @@ public class Box {
 
     public void setX(double x) {
         this.x = x;
+    }
+
+    public DoubleProperty getZoom() {
+        return zoom;
+    }
+
+    public void setZoom(DoubleProperty zoom) {
+        this.zoom = zoom;
     }
 }

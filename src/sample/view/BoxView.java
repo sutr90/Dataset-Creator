@@ -1,7 +1,5 @@
 package sample.view;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.input.MouseButton;
@@ -23,14 +21,19 @@ public class BoxView extends Group {
         hbox.setStyle("-fx-background-color: white;");
         hbox.setTranslateX(box.getX() - box.getWidth() / 2);
         hbox.setTranslateY(box.getY() - box.getHeight() / 2);
-        hbox.scaleXProperty().bind(box.zoom);
-        hbox.scaleYProperty().bind(box.zoom);
+        hbox.scaleXProperty().bind(box.getZoom());
+        hbox.scaleYProperty().bind(box.getZoom());
         makeDraggable(hbox);
 
         setOnMouseClicked(event -> {
             if (event.getClickCount() == 1 && event.getButton().equals(MouseButton.SECONDARY)) {
                 View.getController().removeBox(box);
             }
+        });
+
+        setOnScroll(event -> {
+            setZoom(event.getDeltaY(), event.isControlDown());
+            event.consume();
         });
     }
 
@@ -60,8 +63,12 @@ public class BoxView extends Group {
         });
     }
 
-    public void setZoom(double zoomFactor){
-        box.zoom.set(box.zoom.get() * zoomFactor);
+    public void setZoom(double deltaY, boolean slow) {
+        double zoomFactor = slow ? 1.05 : 1.2;
+        if (deltaY < 0) {
+            zoomFactor = 2.0 - zoomFactor;
+        }
+        box.getZoom().set(box.getZoom().get() * zoomFactor);
     }
 
     private final class DragContext {
