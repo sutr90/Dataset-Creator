@@ -18,16 +18,17 @@ class SceneKeyHandler implements EventHandler<KeyEvent> {
         switch (event.getCode()) {
             case SPACE:
             case ENTER:
-                view.showNextImage();
-                break;
             case KP_RIGHT:
             case RIGHT:
+            case K:
                 view.showNextImage();
                 break;
             case KP_LEFT:
             case LEFT:
+            case J:
                 view.showPreviousImage();
                 break;
         }
+        event.consume();
     }
 }

@@ -1,15 +1,18 @@
 package sample.view;
 
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -41,16 +44,24 @@ public class View extends Application {
     public void start(Stage primaryStage) throws Exception {
         this.datasetName = getDatasetName();
 
-        final StackPane sceneLayout = new StackPane();
-        sceneLayout.getChildren().addAll(imageView, panelsPane);
-        final Scene scene = new Scene(sceneLayout, 800, 800);
+        final StackPane sceneLayout = new StackPane(imageView);
+        sceneLayout.getChildren().addAll(panelsPane);
+        ScrollPane scroll = new ScrollPane();
+        scroll.setContent(sceneLayout);
 
-        scene.addEventHandler(KeyEvent.KEY_PRESSED, new SceneKeyHandler(this));
+        final Scene scene = new Scene(scroll);
+
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, new SceneKeyHandler(this));
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, new SceneMouseHandler());
-        panelsPane.setOnScroll(event -> controller.doZoom(event));
+        scene.addEventFilter(ScrollEvent.SCROLL, event -> {
+            controller.doZoom(event);
+            event.consume();
+        });
 
         primaryStage.titleProperty().bind(controller.getTitleProperty());
         primaryStage.setScene(scene);
+        primaryStage.setMinHeight(600);
+        primaryStage.setMinWidth(800);
         primaryStage.show();
 
         showNextImage();

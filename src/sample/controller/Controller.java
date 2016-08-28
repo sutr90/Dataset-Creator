@@ -100,6 +100,5 @@ public class Controller {
                     .getMessage(), ButtonType.OK);
             a.showAndWait();
         }
-
     }
 }
