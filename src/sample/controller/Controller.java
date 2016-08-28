@@ -8,8 +8,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.ScrollEvent;
 import sample.model.Box;
 import sample.model.Dataset;
@@ -21,7 +19,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Controller {
@@ -30,6 +27,7 @@ public class Controller {
 
     private final ObservableList<BoxView> observableList = FXCollections.observableArrayList();
     private ListProperty<BoxView> boxesProperty = new SimpleListProperty<>(observableList);
+    private boolean dragging;
 
     public Controller(String datasetPath) {
         titleProperty = new SimpleStringProperty("");
@@ -108,5 +106,13 @@ public class Controller {
 
     public int getNumberOfImages() {
         return dataset.getSize();
+    }
+
+    public void setDragging(Boolean dragging) {
+        this.dragging = dragging;
+    }
+
+    public boolean isDragging() {
+        return dragging;
     }
 }

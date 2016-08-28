@@ -3,6 +3,7 @@ package sample.view;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import sample.controller.Controller;
 
 class SceneMouseHandler implements EventHandler<MouseEvent> {
     @Override
@@ -11,8 +12,13 @@ class SceneMouseHandler implements EventHandler<MouseEvent> {
             return;
         }
 
-        if (event.getClickCount() == 1 && event.getButton().equals(MouseButton.PRIMARY) && event.isStillSincePress()) {
-            View.getController().createBox(event.getX(), event.getY());
+        if (event.getClickCount() == 1 && event.getButton().equals(MouseButton.PRIMARY)) {
+            Controller controller = View.getController();
+            if (controller.isDragging()) {
+                controller.setDragging(false);
+                return;
+            }
+            controller.createBox(event.getX(), event.getY());
             event.consume();
         }
     }

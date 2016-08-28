@@ -50,6 +50,7 @@ public class BoxView extends Group {
 
         addEventFilter(MouseEvent.MOUSE_DRAGGED, mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                View.getController().setDragging(true);
                 hbox.setTranslateX(dragContext.initialTranslateX + mouseEvent.getSceneX() - dragContext.mouseAnchorX);
                 hbox.setTranslateY(dragContext.initialTranslateY + mouseEvent.getSceneY() - dragContext.mouseAnchorY);
             }
