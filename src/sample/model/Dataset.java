@@ -10,8 +10,12 @@ import java.util.stream.Collectors;
 public class Dataset {
     private final ListIterator<Image> imgIterator;
 
+    private final String TITLE_TEMPLATE;
+    private String title;
+
     public Dataset(String datasetPath) {
         List<Image> images = loadImages(datasetPath);
+        TITLE_TEMPLATE = "%d/"+ images.size() + " - %s";
         imgIterator = images.listIterator();
     }
 
@@ -34,6 +38,12 @@ public class Dataset {
     }
 
     public Image next() {
-        return imgIterator.next();
+        Image image = imgIterator.next();
+        title = String.format(TITLE_TEMPLATE, imgIterator.nextIndex(), image.getName());
+        return image;
+    }
+
+    public String getTitle() {
+        return title;
     }
 }

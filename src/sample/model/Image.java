@@ -12,4 +12,8 @@ public class Image {
     public String getUriString() {
         return imgFile.toURI().toString();
     }
+
+    public String getName() {
+        return imgFile.getName();
+    }
 }
