@@ -47,6 +47,8 @@ public class View extends Application {
         final StackPane sceneLayout = new StackPane(imageView);
         sceneLayout.getChildren().addAll(panelsPane);
         ScrollPane scroll = new ScrollPane();
+        scroll.setFitToWidth(true);
+        scroll.setFitToHeight(true);
         scroll.setContent(sceneLayout);
 
         final Scene scene = new Scene(scroll);
