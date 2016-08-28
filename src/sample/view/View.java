@@ -1,7 +1,10 @@
 package sample.view;
 
 import javafx.application.Application;
-import javafx.scene.Node;
+import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -22,6 +25,8 @@ public class View extends Application {
     public View() {
         final String datasetPath = params[0];
         View.controller = new Controller(datasetPath);
+
+        controller.getBoxesProperty().addListener((ListChangeListener<BoxView>) c -> updateBoxes());
     }
 
     public static void main(final String[] args) {
@@ -68,8 +73,8 @@ public class View extends Application {
         return controller;
     }
 
-    void updateBoxes() {
+    private void updateBoxes() {
         panelsPane.getChildren().clear();
-        panelsPane.getChildren().addAll(controller.getBoxes());
+        panelsPane.getChildren().addAll(controller.getBoxesProperty());
     }
 }
