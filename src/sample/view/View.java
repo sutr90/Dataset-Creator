@@ -11,15 +11,17 @@ import sample.controller.Controller;
 
 public class View extends Application {
 
+    private static String[] params;
     private final Controller controller;
 
     public View() {
-        getParameters();
-        this.controller = new Controller();
+        final String datasetPath = params[0];
+        this.controller = new Controller(datasetPath);
     }
 
     public static void main(final String[] args) {
-        launch(args);
+        params = args;
+        launch();
     }
 
     @Override
@@ -33,10 +35,12 @@ public class View extends Application {
         primaryStage.titleProperty().bind(controller.getTitleProperty());
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        showImage(controller.next(), imageView);
     }
 
     /**
-     * @param image show this image
+     * @param image     show this image
      * @param imageView on this image view component
      */
     private void showImage(sample.view.ImageView image, ImageView imageView) {
