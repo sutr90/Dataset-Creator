@@ -64,12 +64,12 @@ public class View extends Application {
         }
     }
 
-    void createBox(double x, double y) {
-        final Node box = new BoxView(this, x, y);
-        panelsPane.getChildren().add(box);
+    Controller getController() {
+        return controller;
     }
 
-    void removeBox(BoxView boxView) {
-        panelsPane.getChildren().remove(boxView);
+    void updateBoxes() {
+        panelsPane.getChildren().clear();
+        panelsPane.getChildren().addAll(controller.getBoxes());
     }
 }

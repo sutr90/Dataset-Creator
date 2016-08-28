@@ -4,7 +4,11 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import sample.model.Dataset;
 import sample.model.Image;
+import sample.view.BoxView;
 import sample.view.ImageView;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Controller {
     private final StringProperty titleProperty;
@@ -41,5 +45,13 @@ public class Controller {
         Image next = dataset.previous();
         updateTitle();
         return ImageView.get(next);
+    }
+
+    public void createBox(double x, double y) {
+        dataset.createBox(x,y);
+    }
+
+    public List<BoxView> getBoxes() {
+        return dataset.getBoxes().stream().map(BoxView::new).collect(Collectors.toList());
     }
 }

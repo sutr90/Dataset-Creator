@@ -56,4 +56,12 @@ public class Dataset {
         imgIndex--;
         return images[imgIndex];
     }
+
+    public void createBox(double x, double y) {
+        images[imgIndex].createBox(x,y);
+    }
+
+    public List<Box> getBoxes() {
+        return images[imgIndex].getBoxes();
+    }
 }

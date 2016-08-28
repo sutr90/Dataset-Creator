@@ -1,26 +1,16 @@
 package sample.view;
 
 import javafx.scene.effect.BlendMode;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
+import sample.model.Box;
 
-class BoxView extends HBox {
-    private final int SIZE = 60;
-    private final View view;
-
-    BoxView(View view, double x, double y) {
+public class BoxView extends HBox {
+    public BoxView(Box box) {
         super();
-        this.view = view;
-        this.setMinSize(SIZE, SIZE);
+        this.setMinSize(box.getWidth(), box.getHeight());
         this.setBlendMode(BlendMode.DIFFERENCE);
         this.setStyle("-fx-background-color: white;");
-        this.setTranslateX(x - SIZE / 2);
-        this.setTranslateY(y - SIZE / 2);
-
-        this.setOnMouseClicked(click -> {
-            if(click.getClickCount() == 1 && click.getButton().equals(MouseButton.SECONDARY)){
-                view.removeBox(this);
-            }
-        });
+        this.setTranslateX(box.getX() - box.getWidth() / 2);
+        this.setTranslateY(box.getY() - box.getHeight() / 2);
     }
 }
