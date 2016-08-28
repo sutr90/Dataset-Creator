@@ -8,13 +8,15 @@ import java.util.stream.Collectors;
 
 public class Dataset {
     private int imgIndex;
-    private Image[] images;
+    private final Image[] images;
     private final String TITLE_TEMPLATE;
+    private final String path;
 
     public Dataset(String datasetPath) {
         images = loadImages(datasetPath);
         TITLE_TEMPLATE = "%d/" + images.length + " - %s";
         imgIndex = -1;
+        this.path = datasetPath;
     }
 
     private Image[] loadImages(String datasetPath) {
@@ -82,5 +84,9 @@ public class Dataset {
         sb.append("</images>\n");
         sb.append("</dataset>");
         return sb.toString();
+    }
+
+    public String getPath() {
+        return path;
     }
 }

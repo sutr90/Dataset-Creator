@@ -4,6 +4,8 @@ import javafx.application.Application;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -13,12 +15,15 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import sample.controller.Controller;
 
+import java.util.Optional;
+
 public class View extends Application {
 
     private static String[] params;
     private final Pane panelsPane = new Pane();
     private final ImageView imageView = new ImageView();
     private static Controller controller;
+    private String datasetName;
 
     public View() {
         final String datasetPath = params[0];
@@ -34,6 +39,8 @@ public class View extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        this.datasetName = getDatasetName();
+
         final StackPane sceneLayout = new StackPane();
         sceneLayout.getChildren().addAll(imageView, panelsPane);
         final Scene scene = new Scene(sceneLayout, 800, 800);
@@ -47,6 +54,24 @@ public class View extends Application {
         primaryStage.show();
 
         showNextImage();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        controller.saveDataset(datasetName);
+    }
+
+    private String getDatasetName() {
+        Dialog<String> dialog = new TextInputDialog("dataset");
+        dialog.setHeaderText("Enter dataset name.");
+
+        String entered = "dataset";
+        Optional<String> result = dialog.showAndWait();
+
+        if (result.isPresent()) {
+            entered = result.get();
+        }
+        return entered;
     }
 
     /**

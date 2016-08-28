@@ -45,7 +45,7 @@ public class Box {
     }
 
     String toXmlString() {
-        return "<box top='" + y + "' left='" + y + "' width='" + (int) width * zoom.get() + "' height='" + (int)
+        return "<box top='" + y + "' left='" + x + "' width='" + (int) width * zoom.get() + "' height='" + (int)
                 height * zoom.get() + "'/>\n";
     }
 }

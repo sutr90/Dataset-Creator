@@ -1,12 +1,13 @@
 package sample.controller;
 
-import javafx.beans.Observable;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.ScrollEvent;
 import sample.model.Box;
 import sample.model.Dataset;
@@ -14,6 +15,10 @@ import sample.model.Image;
 import sample.view.BoxView;
 import sample.view.ImageView;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
 public class Controller {
@@ -79,5 +84,22 @@ public class Controller {
 
     public void doZoom(ScrollEvent event) {
         observableList.forEach(bv -> bv.setZoom(event.getDeltaY(), event.isControlDown()));
+    }
+
+    public void saveDataset(String datasetName) {
+        String filename = datasetName.replaceAll("\\W+", "_");
+        Path path = Paths.get(dataset.getPath(), filename);
+        try (PrintWriter out = new PrintWriter(path.toString() + ".xml")) {
+            out.println(dataset.toXmlString());
+            Alert a = new Alert(Alert.AlertType.INFORMATION, "Dataset saved to " + path.toString() + ".xml",
+                    ButtonType.OK);
+            a.setHeaderText("");
+            a.showAndWait();
+        } catch (FileNotFoundException e) {
+            Alert a = new Alert(Alert.AlertType.ERROR, "Error saving dataset to " + path.toString() + ".xml\n" + e
+                    .getMessage(), ButtonType.OK);
+            a.showAndWait();
+        }
+
     }
 }
