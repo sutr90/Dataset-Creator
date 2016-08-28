@@ -2,11 +2,13 @@ package sample.controller;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import sample.model.Box;
 import sample.model.Dataset;
 import sample.model.Image;
 import sample.view.BoxView;
 import sample.view.ImageView;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,6 +54,10 @@ public class Controller {
     }
 
     public List<BoxView> getBoxes() {
-        return dataset.getBoxes().stream().map(BoxView::new).collect(Collectors.toList());
+        return Collections.unmodifiableList(dataset.getBoxes().stream().map(BoxView::new).collect(Collectors.toList()));
+    }
+
+    public void removeBox(Box box) {
+        dataset.removeBox(box);
     }
 }

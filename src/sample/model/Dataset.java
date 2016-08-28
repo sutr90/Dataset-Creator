@@ -64,4 +64,8 @@ public class Dataset {
     public List<Box> getBoxes() {
         return images[imgIndex].getBoxes();
     }
+
+    public void removeBox(Box box) {
+        images[imgIndex].removeBox(box);
+    }
 }

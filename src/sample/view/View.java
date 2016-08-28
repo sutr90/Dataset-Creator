@@ -17,11 +17,11 @@ public class View extends Application {
     private static String[] params;
     private final Pane panelsPane = new Pane();
     private final ImageView imageView = new ImageView();
-    private final Controller controller;
+    private static Controller controller;
 
     public View() {
         final String datasetPath = params[0];
-        this.controller = new Controller(datasetPath);
+        View.controller = new Controller(datasetPath);
     }
 
     public static void main(final String[] args) {
@@ -64,7 +64,7 @@ public class View extends Application {
         }
     }
 
-    Controller getController() {
+    static Controller getController() {
         return controller;
     }
 

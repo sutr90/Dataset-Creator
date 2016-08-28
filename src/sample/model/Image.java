@@ -2,6 +2,7 @@ package sample.model;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Image {
@@ -26,6 +27,10 @@ public class Image {
     }
 
     List<Box> getBoxes() {
-        return boxes;
+        return Collections.unmodifiableList(boxes);
+    }
+
+    void removeBox(Box box) {
+        boxes.remove(box);
     }
 }
