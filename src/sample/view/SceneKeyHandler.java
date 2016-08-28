@@ -12,6 +12,9 @@ class SceneKeyHandler implements EventHandler<KeyEvent> {
 
     @Override
     public void handle(KeyEvent event) {
+        if (!event.getEventType().equals(KeyEvent.KEY_PRESSED)) {
+            return;
+        }
         switch (event.getCode()) {
             case SPACE:
             case ENTER:
