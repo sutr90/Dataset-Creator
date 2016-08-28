@@ -6,9 +6,7 @@ import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -21,7 +19,6 @@ import javafx.stage.Stage;
 import sample.controller.Controller;
 
 import java.io.File;
-import java.util.Optional;
 
 public class View extends Application {
 
@@ -29,7 +26,6 @@ public class View extends Application {
     private final Pane panelsPane = new Pane();
     private final ImageView imageView = new ImageView();
     private static Controller controller;
-    private String datasetName;
 
     public View() {
 
@@ -65,7 +61,6 @@ public class View extends Application {
         }
 
         controller.getBoxesProperty().addListener((ListChangeListener<Node>) c -> updateBoxes());
-        this.datasetName = getDatasetName();
 
         final StackPane sceneLayout = new StackPane(imageView);
         sceneLayout.getChildren().addAll(panelsPane);
@@ -97,21 +92,8 @@ public class View extends Application {
     @Override
     public void stop() throws Exception {
         if (controller.getNumberOfImages() > 0) {
-            controller.saveDataset(datasetName);
+            controller.saveDataset();
         }
-    }
-
-    private String getDatasetName() {
-        Dialog<String> dialog = new TextInputDialog("dataset");
-        dialog.setHeaderText("Enter dataset name.");
-
-        String entered = "dataset";
-        Optional<String> result = dialog.showAndWait();
-
-        if (result.isPresent()) {
-            entered = result.get();
-        }
-        return entered;
     }
 
     /**

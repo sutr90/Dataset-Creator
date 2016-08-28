@@ -8,6 +8,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.input.ScrollEvent;
 import sample.model.Box;
 import sample.model.Dataset;
@@ -19,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Controller {
@@ -86,7 +89,8 @@ public class Controller {
         observableList.forEach(bv -> bv.setZoom(event.getDeltaY(), event.isControlDown()));
     }
 
-    public void saveDataset(String datasetName) {
+    public void saveDataset() {
+        String datasetName = dataset.getDatasetName();
         String filename = datasetName.replaceAll("\\W+", "_");
         Path path = Paths.get(dataset.getPath(), filename);
         try (PrintWriter out = new PrintWriter(path.toString() + ".xml")) {

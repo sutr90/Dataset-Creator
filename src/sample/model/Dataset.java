@@ -1,12 +1,17 @@
 package sample.model;
 
+import javafx.scene.control.Dialog;
+import javafx.scene.control.TextInputDialog;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Dataset {
+    private final String datasetName;
     private int imgIndex;
     private final Image[] images;
     private final String TITLE_TEMPLATE;
@@ -17,6 +22,20 @@ public class Dataset {
         TITLE_TEMPLATE = "%d/" + images.length + " - %s";
         imgIndex = -1;
         this.path = datasetPath;
+        this.datasetName = promptDatasetName();
+    }
+
+    private String promptDatasetName() {
+        Dialog<String> dialog = new TextInputDialog("dataset");
+        dialog.setHeaderText("Enter dataset name.");
+
+        String entered = "dataset";
+        Optional<String> result = dialog.showAndWait();
+
+        if (result.isPresent()) {
+            entered = result.get();
+        }
+        return entered;
     }
 
     private Image[] loadImages(String datasetPath) {
@@ -43,7 +62,7 @@ public class Dataset {
     }
 
     public String getTitle() {
-        return String.format(TITLE_TEMPLATE, imgIndex+1, images[imgIndex].getName());
+        return String.format(TITLE_TEMPLATE, imgIndex + 1, images[imgIndex].getName());
     }
 
     public boolean hasNext() {
@@ -60,7 +79,7 @@ public class Dataset {
     }
 
     public void createBox(double x, double y) {
-        images[imgIndex].createBox(x,y);
+        images[imgIndex].createBox(x, y);
     }
 
     public List<Box> getBoxes() {
@@ -77,7 +96,7 @@ public class Dataset {
         sb.append("<?xml-stylesheet type='text/xsl' href='image_metadata_stylesheet.xsl'?>\n");
         sb.append("<dataset>\n");
         sb.append("<name>");
-//        sb.append(name);
+        sb.append(datasetName);
         sb.append("</name>\n");
         sb.append("<images>\n");
         Arrays.stream(images).forEach(im -> sb.append(im.toXmlString()));
@@ -92,5 +111,9 @@ public class Dataset {
 
     public int getSize() {
         return images.length;
+    }
+
+    public String getDatasetName() {
+        return datasetName;
     }
 }

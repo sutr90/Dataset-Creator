@@ -21,11 +21,13 @@ class SceneKeyHandler implements EventHandler<KeyEvent> {
             case KP_RIGHT:
             case RIGHT:
             case K:
+            case D:
                 view.showNextImage();
                 break;
             case KP_LEFT:
             case LEFT:
             case J:
+            case A:
                 view.showPreviousImage();
                 break;
         }
