@@ -8,11 +8,10 @@ import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 public class Dataset {
-    private final List<Image> images;
     private final ListIterator<Image> imgIterator;
 
     public Dataset(String datasetPath) {
-        images = loadImages(datasetPath);
+        List<Image> images = loadImages(datasetPath);
         imgIterator = images.listIterator();
     }
 
