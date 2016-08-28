@@ -54,7 +54,7 @@ public class View extends Application {
         final Scene scene = new Scene(scroll);
 
         scene.addEventFilter(KeyEvent.KEY_PRESSED, new SceneKeyHandler(this));
-        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, new SceneMouseHandler());
+        panelsPane.addEventHandler(MouseEvent.MOUSE_CLICKED, new SceneMouseHandler());
         scene.addEventFilter(ScrollEvent.SCROLL, event -> {
             controller.doZoom(event);
             event.consume();

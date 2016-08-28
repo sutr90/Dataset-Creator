@@ -19,8 +19,8 @@ public class BoxView extends Group {
         getChildren().add(hbox);
         hbox.setBlendMode(BlendMode.DIFFERENCE);
         hbox.setStyle("-fx-background-color: white;");
-        hbox.setTranslateX(box.getX() - box.getWidth() / 2);
-        hbox.setTranslateY(box.getY() - box.getHeight() / 2);
+        hbox.setTranslateX(box.getX());
+        hbox.setTranslateY(box.getY());
         hbox.scaleXProperty().bind(box.getZoom());
         hbox.scaleYProperty().bind(box.getZoom());
         makeDraggable(hbox);
@@ -57,8 +57,8 @@ public class BoxView extends Group {
 
         addEventFilter(MouseEvent.MOUSE_RELEASED, mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                box.setX(hbox.getTranslateX() + box.getWidth() / 2);
-                box.setY(hbox.getTranslateY() + box.getHeight() / 2);
+                box.setX(hbox.getTranslateX());
+                box.setY(hbox.getTranslateY());
             }
         });
     }

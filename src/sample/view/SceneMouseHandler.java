@@ -12,7 +12,7 @@ class SceneMouseHandler implements EventHandler<MouseEvent> {
         }
 
         if (event.getClickCount() == 1 && event.getButton().equals(MouseButton.PRIMARY) && event.isStillSincePress()) {
-            View.getController().createBox(event.getSceneX(), event.getSceneY());
+            View.getController().createBox(event.getX(), event.getY());
             event.consume();
         }
     }

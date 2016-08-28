@@ -12,8 +12,8 @@ public class Box {
     private DoubleProperty zoom = new SimpleDoubleProperty(1.0);
 
     Box(double x, double y) {
-        this.x = x;
-        this.y = y;
+        this.x = x - width / 2;
+        this.y = y - height / 2;
     }
 
     public double getY() {
