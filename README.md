@@ -11,3 +11,5 @@ Suppported image formats are JPG, BMP, PNG.
 * Right Click - remove box
 
 Boxes are draggable, drag using left mouse. To change the size of the box use mouse wheel. If mouse is over box it will change it's size. Otherwise all boxes will change size. For smaller zoom step hold Control.
+
+Java 1.8u40+ required to launch.
