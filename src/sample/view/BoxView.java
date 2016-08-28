@@ -68,7 +68,9 @@ public class BoxView extends Group {
         if (deltaY < 0) {
             zoomFactor = 2.0 - zoomFactor;
         }
-        box.getZoom().set(box.getZoom().get() * zoomFactor);
+
+        double newZoom = Math.max(box.getZoom().get() * zoomFactor, 1.0);
+        box.getZoom().set(newZoom);
     }
 
     private final class DragContext {
