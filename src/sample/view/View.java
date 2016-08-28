@@ -49,9 +49,6 @@ public class View extends Application {
         imageView.setImage(new Image(image.getUriString()));
     }
 
-    /**
-     * Shows next image.
-     */
     void showNextImage() {
         if (controller.hasNext()) {
             showImage(controller.next());

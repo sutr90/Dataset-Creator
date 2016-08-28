@@ -10,7 +10,6 @@ public class Dataset {
     private int imgIndex;
     private Image[] images;
     private final String TITLE_TEMPLATE;
-    private String title;
 
     public Dataset(String datasetPath) {
         images = loadImages(datasetPath);
