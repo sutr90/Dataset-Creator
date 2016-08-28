@@ -44,8 +44,7 @@ public class Box {
         return zoom;
     }
 
-    @Override
-    public String toString() {
+    String toXmlString() {
         return "<box top='" + y + "' left='" + y + "' width='" + (int) width * zoom.get() + "' height='" + (int)
                 height * zoom.get() + "'/>\n";
     }

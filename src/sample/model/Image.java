@@ -23,7 +23,7 @@ public class Image {
     }
 
     void createBox(double x, double y) {
-        boxes.add(new Box(x,y));
+        boxes.add(new Box(x, y));
     }
 
     List<Box> getBoxes() {
@@ -34,14 +34,15 @@ public class Image {
         boxes.remove(box);
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("<image file='");
-        sb.append(getName());
-        sb.append("'>\n");
-        boxes.forEach(box -> sb.append(box.toString()));
-        sb.append("</image>\n");
-        return sb.toString();
+    String toXmlString() {
+        if (boxes.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            sb.append("<image file='");
+            sb.append(getName());
+            sb.append("'>\n");
+            boxes.forEach(box -> sb.append(box.toXmlString()));
+            sb.append("</image>\n");
+            return sb.toString();
+        } else return "";
     }
 }
