@@ -68,4 +68,20 @@ public class Dataset {
     public void removeBox(Box box) {
         images[imgIndex].removeBox(box);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<?xml version='1.0' encoding='utf-8'?>\n");
+        sb.append("<?xml-stylesheet type='text/xsl' href='image_metadata_stylesheet.xsl'?>\n");
+        sb.append("<dataset>\n");
+        sb.append("<name>");
+//        sb.append(name);
+        sb.append("</name>\n");
+        sb.append("<images>\n");
+        Arrays.stream(images).forEach(im -> sb.append(im.toString()));
+        sb.append("</images>\n");
+        sb.append("</dataset>");
+        return sb.toString();
+    }
 }

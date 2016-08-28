@@ -33,4 +33,15 @@ public class Image {
     void removeBox(Box box) {
         boxes.remove(box);
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<image file='");
+        sb.append(getName());
+        sb.append("'>\n");
+        boxes.forEach(box -> sb.append(box.toString()));
+        sb.append("</image>\n");
+        return sb.toString();
+    }
 }

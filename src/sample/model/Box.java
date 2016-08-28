@@ -44,7 +44,9 @@ public class Box {
         return zoom;
     }
 
-    public void setZoom(DoubleProperty zoom) {
-        this.zoom = zoom;
+    @Override
+    public String toString() {
+        return "<box top='" + y + "' left='" + y + "' width='" + (int) width * zoom.get() + "' height='" + (int)
+                height * zoom.get() + "'/>\n";
     }
 }
