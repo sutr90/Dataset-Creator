@@ -43,7 +43,7 @@ public class View extends Application {
     }
 
     /**
-     * @param image     show this image
+     * @param image show this image
      */
     private void showImage(sample.view.ImageView image) {
         imageView.setImage(new Image(image.getUriString()));
@@ -53,6 +53,8 @@ public class View extends Application {
      * Shows next image.
      */
     void showNextImage() {
-        showImage(controller.next());
+        if (controller.hasNext()) {
+            showImage(controller.next());
+        }
     }
 }

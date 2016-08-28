@@ -28,4 +28,8 @@ public class Controller {
     private void updateTitle() {
         titleProperty.set(dataset.getTitle());
     }
+
+    public boolean hasNext() {
+        return dataset.hasNext();
+    }
 }

@@ -15,7 +15,7 @@ public class Dataset {
 
     public Dataset(String datasetPath) {
         List<Image> images = loadImages(datasetPath);
-        TITLE_TEMPLATE = "%d/"+ images.size() + " - %s";
+        TITLE_TEMPLATE = "%d/" + images.size() + " - %s";
         imgIterator = images.listIterator();
     }
 
@@ -45,5 +45,9 @@ public class Dataset {
 
     public String getTitle() {
         return title;
+    }
+
+    public boolean hasNext() {
+        return imgIterator.hasNext();
     }
 }
