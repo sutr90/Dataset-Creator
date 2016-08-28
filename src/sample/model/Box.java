@@ -1,10 +1,15 @@
 package sample.model;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 public class Box {
     private double x;
     private double y;
     private double width = 60;
     private double height = 60;
+
+    public DoubleProperty zoom = new SimpleDoubleProperty(1.0);
 
     Box(double x, double y) {
         this.x = x;

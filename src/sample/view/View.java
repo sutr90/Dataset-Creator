@@ -40,6 +40,7 @@ public class View extends Application {
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, new SceneKeyHandler(this));
         scene.addEventHandler(MouseEvent.MOUSE_CLICKED, new SceneMouseHandler());
+        panelsPane.setOnScroll(event -> controller.doZoom(event));
 
         primaryStage.titleProperty().bind(controller.getTitleProperty());
         primaryStage.setScene(scene);
