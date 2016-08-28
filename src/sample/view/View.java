@@ -1,10 +1,11 @@
 package sample.view;
 
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
@@ -15,9 +16,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import sample.controller.Controller;
 
+import java.io.File;
 import java.util.Optional;
 
 public class View extends Application {
@@ -29,10 +32,19 @@ public class View extends Application {
     private String datasetName;
 
     public View() {
-        final String datasetPath = params[0];
-        View.controller = new Controller(datasetPath);
 
-        controller.getBoxesProperty().addListener((ListChangeListener<Node>) c -> updateBoxes());
+        if (params.length < 1) {
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setTitle("Select directory with images.");
+            File file = directoryChooser.showDialog(null);
+
+            if (file != null) {
+                View.controller = new Controller(file.getPath());
+            }
+        } else {
+            View.controller = new Controller(params[0]);
+        }
+
     }
 
     public static void main(final String[] args) {
@@ -42,6 +54,17 @@ public class View extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        if (controller.getNumberOfImages() == 0) {
+            Alert a = new Alert(Alert.AlertType.WARNING);
+            a.setHeaderText("There are no valid files in selected directory.");
+            a.setContentText("Application will terminate.");
+            a.showAndWait();
+            Platform.exit();
+            return;
+        }
+
+        controller.getBoxesProperty().addListener((ListChangeListener<Node>) c -> updateBoxes());
         this.datasetName = getDatasetName();
 
         final StackPane sceneLayout = new StackPane(imageView);
@@ -71,7 +94,9 @@ public class View extends Application {
 
     @Override
     public void stop() throws Exception {
-        controller.saveDataset(datasetName);
+        if (controller.getNumberOfImages() > 0) {
+            controller.saveDataset(datasetName);
+        }
     }
 
     private String getDatasetName() {

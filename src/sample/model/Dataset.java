@@ -89,4 +89,8 @@ public class Dataset {
     public String getPath() {
         return path;
     }
+
+    public int getSize() {
+        return images.length;
+    }
 }

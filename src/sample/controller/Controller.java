@@ -101,4 +101,8 @@ public class Controller {
             a.showAndWait();
         }
     }
+
+    public int getNumberOfImages() {
+        return dataset.getSize();
+    }
 }
