@@ -39,7 +39,7 @@ public class View extends Application {
         final Scene scene = new Scene(sceneLayout, 800, 800);
 
         scene.addEventHandler(KeyEvent.KEY_PRESSED, new SceneKeyHandler(this));
-        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, new SceneMouseHandler(this));
+        scene.addEventHandler(MouseEvent.MOUSE_CLICKED, new SceneMouseHandler());
 
         primaryStage.titleProperty().bind(controller.getTitleProperty());
         primaryStage.setScene(scene);

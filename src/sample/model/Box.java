@@ -26,4 +26,12 @@ public class Box {
     public double getHeight() {
         return height;
     }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
 }

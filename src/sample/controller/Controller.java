@@ -66,33 +66,8 @@ public class Controller {
 
     private void updateBoxes() {
         observableList.clear();
-        observableList.addAll(dataset.getBoxes().stream().map(BoxView::new).map(this::makeDraggable).collect
+        observableList.addAll(dataset.getBoxes().stream().map(BoxView::new).collect
                 (Collectors.toList()));
-    }
-
-    private Node makeDraggable(BoxView node) {
-        final DragContext dragContext = new DragContext();
-        final Group wrapGroup = new Group(node);
-        wrapGroup.addEventFilter(MouseEvent.MOUSE_PRESSED, mouseEvent -> {
-            dragContext.mouseAnchorX = mouseEvent.getX();
-            dragContext.mouseAnchorY = mouseEvent.getY();
-            dragContext.initialTranslateX = node.getTranslateX();
-            dragContext.initialTranslateY = node.getTranslateY();
-        });
-
-        wrapGroup.addEventFilter(MouseEvent.MOUSE_DRAGGED, mouseEvent -> {
-            node.setTranslateX(dragContext.initialTranslateX + mouseEvent.getX() - dragContext.mouseAnchorX);
-            node.setTranslateY(dragContext.initialTranslateY + mouseEvent.getY() - dragContext.mouseAnchorY);
-        });
-
-        return wrapGroup;
-    }
-
-    private final class DragContext {
-        double mouseAnchorX;
-        double mouseAnchorY;
-        double initialTranslateX;
-        double initialTranslateY;
     }
 
     public void removeBox(Box box) {
