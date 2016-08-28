@@ -33,20 +33,26 @@ public class BoxView extends Group {
     private void makeDraggable(HBox hbox) {
         final DragContext dragContext = new DragContext();
         addEventFilter(MouseEvent.MOUSE_PRESSED, mouseEvent -> {
-            dragContext.mouseAnchorX = mouseEvent.getSceneX();
-            dragContext.mouseAnchorY = mouseEvent.getSceneY();
-            dragContext.initialTranslateX = hbox.getTranslateX();
-            dragContext.initialTranslateY = hbox.getTranslateY();
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                dragContext.mouseAnchorX = mouseEvent.getSceneX();
+                dragContext.mouseAnchorY = mouseEvent.getSceneY();
+                dragContext.initialTranslateX = hbox.getTranslateX();
+                dragContext.initialTranslateY = hbox.getTranslateY();
+            }
         });
 
         addEventFilter(MouseEvent.MOUSE_DRAGGED, mouseEvent -> {
-            hbox.setTranslateX(dragContext.initialTranslateX + mouseEvent.getSceneX() - dragContext.mouseAnchorX);
-            hbox.setTranslateY(dragContext.initialTranslateY + mouseEvent.getSceneY() - dragContext.mouseAnchorY);
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                hbox.setTranslateX(dragContext.initialTranslateX + mouseEvent.getSceneX() - dragContext.mouseAnchorX);
+                hbox.setTranslateY(dragContext.initialTranslateY + mouseEvent.getSceneY() - dragContext.mouseAnchorY);
+            }
         });
 
         addEventFilter(MouseEvent.MOUSE_RELEASED, mouseEvent -> {
-            box.setX(hbox.getTranslateX() + box.getWidth() / 2);
-            box.setY(hbox.getTranslateY() + box.getHeight() / 2);
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                box.setX(hbox.getTranslateX() + box.getWidth() / 2);
+                box.setY(hbox.getTranslateY() + box.getHeight() / 2);
+            }
         });
     }
 
