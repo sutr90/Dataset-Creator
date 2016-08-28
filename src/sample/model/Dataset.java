@@ -4,24 +4,23 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 public class Dataset {
-    private final ListIterator<Image> imgIterator;
-
+    private int imgIndex;
+    private Image[] images;
     private final String TITLE_TEMPLATE;
     private String title;
 
     public Dataset(String datasetPath) {
-        List<Image> images = loadImages(datasetPath);
-        TITLE_TEMPLATE = "%d/" + images.size() + " - %s";
-        imgIterator = images.listIterator();
+        images = loadImages(datasetPath);
+        TITLE_TEMPLATE = "%d/" + images.length + " - %s";
+        imgIndex = -1;
     }
 
-    private List<Image> loadImages(String datasetPath) {
+    private Image[] loadImages(String datasetPath) {
         List<File> imgFiles = loadImageList(datasetPath);
-        return imgFiles.stream().map(Image::new).collect(Collectors.toList());
+        return imgFiles.stream().map(Image::new).toArray(Image[]::new);
     }
 
     private List<File> loadImageList(String path) {
@@ -38,26 +37,24 @@ public class Dataset {
     }
 
     public Image next() {
-        Image image = imgIterator.next();
-        title = String.format(TITLE_TEMPLATE, imgIterator.nextIndex(), image.getName());
-        return image;
+        imgIndex++;
+        return images[imgIndex];
     }
 
     public String getTitle() {
-        return title;
+        return String.format(TITLE_TEMPLATE, imgIndex+1, images[imgIndex].getName());
     }
 
     public boolean hasNext() {
-        return imgIterator.hasNext();
+        return imgIndex + 1 < images.length;
     }
 
     public boolean hasPrevious() {
-        return imgIterator.hasPrevious();
+        return imgIndex - 1 >= 0;
     }
 
     public Image previous() {
-        Image image = imgIterator.previous();
-        title = String.format(TITLE_TEMPLATE, imgIterator.previousIndex(), image.getName());
-        return image;
+        imgIndex--;
+        return images[imgIndex];
     }
 }
