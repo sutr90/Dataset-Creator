@@ -1,7 +1,9 @@
 package sample.view;
 
+import javafx.scene.Node;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import sample.model.Box;
 
@@ -15,7 +17,7 @@ public class BoxView extends HBox {
         this.setTranslateY(box.getY() - box.getHeight() / 2);
 
         setOnMouseClicked(event -> {
-            if(event.getClickCount() == 1 && event.getButton().equals(MouseButton.SECONDARY)){
+            if (event.getClickCount() == 1 && event.getButton().equals(MouseButton.SECONDARY)) {
                 View.getController().removeBox(box);
             }
         });

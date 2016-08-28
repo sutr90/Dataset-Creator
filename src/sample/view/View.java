@@ -1,10 +1,8 @@
 package sample.view;
 
 import javafx.application.Application;
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,7 +24,7 @@ public class View extends Application {
         final String datasetPath = params[0];
         View.controller = new Controller(datasetPath);
 
-        controller.getBoxesProperty().addListener((ListChangeListener<BoxView>) c -> updateBoxes());
+        controller.getBoxesProperty().addListener((ListChangeListener<Node>) c -> updateBoxes());
     }
 
     public static void main(final String[] args) {
