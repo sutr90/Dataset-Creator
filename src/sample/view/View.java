@@ -57,4 +57,10 @@ public class View extends Application {
             showImage(controller.next());
         }
     }
+
+    void showPreviousImage() {
+        if (controller.hasPrevious()) {
+            showImage(controller.previous());
+        }
+    }
 }

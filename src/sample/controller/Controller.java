@@ -32,4 +32,14 @@ public class Controller {
     public boolean hasNext() {
         return dataset.hasNext();
     }
+
+    public boolean hasPrevious() {
+        return dataset.hasPrevious();
+    }
+
+    public ImageView previous() {
+        Image next = dataset.previous();
+        updateTitle();
+        return ImageView.get(next);
+    }
 }

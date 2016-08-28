@@ -50,4 +50,14 @@ public class Dataset {
     public boolean hasNext() {
         return imgIterator.hasNext();
     }
+
+    public boolean hasPrevious() {
+        return imgIterator.hasPrevious();
+    }
+
+    public Image previous() {
+        Image image = imgIterator.previous();
+        title = String.format(TITLE_TEMPLATE, imgIterator.previousIndex(), image.getName());
+        return image;
+    }
 }
