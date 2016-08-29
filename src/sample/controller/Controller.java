@@ -1,9 +1,7 @@
 package sample.controller;
 
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import com.sun.deploy.net.socket.UnixDomainSocket;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
@@ -28,10 +26,14 @@ public class Controller {
     private final ObservableList<BoxView> observableList = FXCollections.observableArrayList();
     private ListProperty<BoxView> boxesProperty = new SimpleListProperty<>(observableList);
     private boolean dragging;
+    private final DoubleProperty imageXOffsetProperty;
+    private final DoubleProperty imageYOffsetProperty;
 
     public Controller(String datasetPath) {
         titleProperty = new SimpleStringProperty("");
         dataset = new Dataset(datasetPath);
+        imageYOffsetProperty = new SimpleDoubleProperty();
+        imageXOffsetProperty = new SimpleDoubleProperty();
     }
 
     public StringProperty getTitleProperty() {
@@ -65,7 +67,7 @@ public class Controller {
     }
 
     public void createBox(double x, double y) {
-        dataset.createBox(x, y);
+        dataset.createBox(x - imageXOffsetProperty.get(), y - imageYOffsetProperty.get());
         updateBoxes();
     }
 
@@ -114,5 +116,13 @@ public class Controller {
 
     public boolean isDragging() {
         return dragging;
+    }
+
+    public DoubleProperty getImageXOffsetProperty() {
+        return imageXOffsetProperty;
+    }
+
+    public DoubleProperty getImageYOffsetProperty() {
+        return imageYOffsetProperty;
     }
 }

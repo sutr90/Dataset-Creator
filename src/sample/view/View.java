@@ -1,5 +1,6 @@
 package sample.view;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
@@ -61,6 +62,8 @@ public class View extends Application {
         }
 
         controller.getBoxesProperty().addListener((ListChangeListener<Node>) c -> updateBoxes());
+        controller.getImageXOffsetProperty().bind(imageView.layoutXProperty());
+        controller.getImageYOffsetProperty().bind(imageView.layoutYProperty());
 
         final StackPane sceneLayout = new StackPane(imageView);
         sceneLayout.getChildren().addAll(panelsPane);
@@ -73,6 +76,9 @@ public class View extends Application {
 
         scene.addEventFilter(KeyEvent.KEY_PRESSED, new SceneKeyHandler(this));
         panelsPane.addEventHandler(MouseEvent.MOUSE_CLICKED, new SceneMouseHandler());
+        panelsPane.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            System.out.println(imageView.getLayoutX());
+        });
         panelsPane.addEventFilter(ScrollEvent.SCROLL, event -> {
             if (event.getTarget().equals(panelsPane)) {
                 controller.doZoom(event);

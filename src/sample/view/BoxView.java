@@ -15,14 +15,15 @@ public class BoxView extends Group {
 
         this.box = box;
         HBox hbox = new HBox();
-        hbox.setMinSize(box.getWidth(), box.getHeight());
+
+        hbox.minWidthProperty().bind(box.getWidthProperty());
+        hbox.minHeightProperty().bind(box.getHeightProperty());
+
         getChildren().add(hbox);
         hbox.setBlendMode(BlendMode.DIFFERENCE);
         hbox.setStyle("-fx-background-color: white;");
-        hbox.setTranslateX(box.getX());
-        hbox.setTranslateY(box.getY());
-        hbox.scaleXProperty().bind(box.getZoom());
-        hbox.scaleYProperty().bind(box.getZoom());
+        hbox.setTranslateX(box.getX() + View.getController().getImageXOffsetProperty().get());
+        hbox.setTranslateY(box.getY() + View.getController().getImageYOffsetProperty().get());
         makeDraggable(hbox);
 
         setOnMouseClicked(event -> {
@@ -58,8 +59,10 @@ public class BoxView extends Group {
 
         addEventFilter(MouseEvent.MOUSE_RELEASED, mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                box.setX(hbox.getTranslateX());
-                box.setY(hbox.getTranslateY());
+                double changeX = mouseEvent.getSceneX() - dragContext.mouseAnchorX;
+                double changeY = mouseEvent.getSceneY() - dragContext.mouseAnchorY;
+                box.addToX(changeX);
+                box.addToY(changeY);
             }
         });
     }
