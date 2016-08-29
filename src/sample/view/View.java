@@ -76,9 +76,6 @@ public class View extends Application {
 
         scene.addEventFilter(KeyEvent.KEY_PRESSED, new SceneKeyHandler(this));
         panelsPane.addEventHandler(MouseEvent.MOUSE_CLICKED, new SceneMouseHandler());
-        panelsPane.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-            System.out.println(imageView.getLayoutX());
-        });
         panelsPane.addEventFilter(ScrollEvent.SCROLL, event -> {
             if (event.getTarget().equals(panelsPane)) {
                 controller.doZoom(event);
