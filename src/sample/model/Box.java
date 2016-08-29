@@ -4,37 +4,28 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 public class Box {
-    private double x;
-    private double y;
     private static final double MIN_WIDTH = 16;
     private static final double MIN_HEIGHT = 16;
 
     private DoubleProperty zoom = new SimpleDoubleProperty(4.0);
     private DoubleProperty widthProperty = new SimpleDoubleProperty();
     private DoubleProperty heightProperty = new SimpleDoubleProperty();
+    private DoubleProperty xProperty;
+    private DoubleProperty yProperty;
 
     Box(double x, double y) {
-        this.x = x;
-        this.y = y;
-
         widthProperty.bind(zoom.multiply(MIN_WIDTH));
         heightProperty.bind(zoom.multiply(MIN_HEIGHT));
-    }
-
-    public double getY() {
-        return y;
-    }
-
-    public double getX() {
-        return x;
+        xProperty = new SimpleDoubleProperty(x);
+        yProperty = new SimpleDoubleProperty(y);
     }
 
     public void addToY(double y) {
-        this.y += y;
+        yProperty.setValue(yProperty.get() + y);
     }
 
     public void addToX(double x) {
-        this.x += x;
+        xProperty.setValue(xProperty.get() + x);
     }
 
     public DoubleProperty getZoom() {
@@ -42,8 +33,8 @@ public class Box {
     }
 
     String toXmlString() {
-        return "<box top='" + (int)y + "' left='" + (int)x + "' width='" + (int) (widthProperty.get()) + "' height='" + (int)
-                (heightProperty.get()) + "'/>\n";
+        return "<box top='" + yProperty.intValue() + "' left='" + xProperty.intValue() + "' width='" + widthProperty
+                .intValue() + "' " + "height='" + heightProperty.intValue() + "'/>\n";
     }
 
     public DoubleProperty getWidthProperty() {
@@ -52,5 +43,13 @@ public class Box {
 
     public DoubleProperty getHeightProperty() {
         return heightProperty;
+    }
+
+    public DoubleProperty getXProperty() {
+        return xProperty;
+    }
+
+    public DoubleProperty getYProperty() {
+        return yProperty;
     }
 }

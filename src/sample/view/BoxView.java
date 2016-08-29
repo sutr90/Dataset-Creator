@@ -22,9 +22,9 @@ public class BoxView extends Group {
         getChildren().add(hbox);
         hbox.setBlendMode(BlendMode.DIFFERENCE);
         hbox.setStyle("-fx-background-color: white;");
-        hbox.setTranslateX(box.getX() + View.getController().getImageXOffsetProperty().get());
-        hbox.setTranslateY(box.getY() + View.getController().getImageYOffsetProperty().get());
-        makeDraggable(hbox);
+        hbox.translateXProperty().bind(box.getXProperty().add(View.getController().getImageXOffsetProperty()));
+        hbox.translateYProperty().bind(box.getYProperty().add(View.getController().getImageYOffsetProperty()));
+        makeDraggable();
 
         setOnMouseClicked(event -> {
             if (event.getClickCount() == 1 && event.getButton().equals(MouseButton.SECONDARY)) {
@@ -38,31 +38,24 @@ public class BoxView extends Group {
         });
     }
 
-    private void makeDraggable(HBox hbox) {
+    private void makeDraggable() {
         final DragContext dragContext = new DragContext();
         addEventFilter(MouseEvent.MOUSE_PRESSED, mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 dragContext.mouseAnchorX = mouseEvent.getSceneX();
                 dragContext.mouseAnchorY = mouseEvent.getSceneY();
-                dragContext.initialTranslateX = hbox.getTranslateX();
-                dragContext.initialTranslateY = hbox.getTranslateY();
+                dragContext.initialX = box.getXProperty().get();
+                dragContext.initialY = box.getYProperty().get();
             }
         });
 
         addEventFilter(MouseEvent.MOUSE_DRAGGED, mouseEvent -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 View.getController().setDragging(true);
-                hbox.setTranslateX(dragContext.initialTranslateX + mouseEvent.getSceneX() - dragContext.mouseAnchorX);
-                hbox.setTranslateY(dragContext.initialTranslateY + mouseEvent.getSceneY() - dragContext.mouseAnchorY);
-            }
-        });
-
-        addEventFilter(MouseEvent.MOUSE_RELEASED, mouseEvent -> {
-            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 double changeX = mouseEvent.getSceneX() - dragContext.mouseAnchorX;
                 double changeY = mouseEvent.getSceneY() - dragContext.mouseAnchorY;
-                box.addToX(changeX);
-                box.addToY(changeY);
+                box.getXProperty().set(dragContext.initialX + changeX);
+                box.getYProperty().set(dragContext.initialY + changeY);
             }
         });
     }
@@ -80,7 +73,7 @@ public class BoxView extends Group {
     private final class DragContext {
         double mouseAnchorX;
         double mouseAnchorY;
-        double initialTranslateX;
-        double initialTranslateY;
+        double initialX;
+        double initialY;
     }
 }
