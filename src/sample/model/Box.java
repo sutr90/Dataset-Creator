@@ -20,21 +20,14 @@ public class Box {
         yProperty = new SimpleDoubleProperty(y);
     }
 
-    public void addToY(double y) {
-        yProperty.setValue(yProperty.get() + y);
-    }
-
-    public void addToX(double x) {
-        xProperty.setValue(xProperty.get() + x);
-    }
-
     public DoubleProperty getZoom() {
         return zoom;
     }
 
     String toXmlString() {
-        return "<box top='" + yProperty.intValue() + "' left='" + xProperty.intValue() + "' width='" + widthProperty
-                .intValue() + "' " + "height='" + heightProperty.intValue() + "'/>\n";
+        return "<box top='" + (yProperty.intValue() - heightProperty.intValue() / 2) + "' left='" + (xProperty
+                .intValue() - widthProperty.intValue() / 2) + "' width='" + widthProperty.intValue() + "' " +
+                "height='" + heightProperty.intValue() + "'/>\n";
     }
 
     public DoubleProperty getWidthProperty() {

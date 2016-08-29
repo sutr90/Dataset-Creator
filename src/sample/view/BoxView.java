@@ -22,8 +22,8 @@ public class BoxView extends Group {
         getChildren().add(hbox);
         hbox.setBlendMode(BlendMode.DIFFERENCE);
         hbox.setStyle("-fx-background-color: white;");
-        hbox.translateXProperty().bind(box.getXProperty().add(View.getController().getImageXOffsetProperty()));
-        hbox.translateYProperty().bind(box.getYProperty().add(View.getController().getImageYOffsetProperty()));
+        hbox.translateXProperty().bind(box.getXProperty().add(View.getController().getImageXOffsetProperty()).subtract(box.getWidthProperty().divide(2)));
+        hbox.translateYProperty().bind(box.getYProperty().add(View.getController().getImageYOffsetProperty()).subtract(box.getWidthProperty().divide(2)));
         makeDraggable();
 
         setOnMouseClicked(event -> {
